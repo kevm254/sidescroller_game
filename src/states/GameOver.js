@@ -1,0 +1,49 @@
+import Phaser, { State } from 'phaser';
+
+export default class extends State {
+    constructor() {
+        super();
+
+        this.enterButton = Phaser.Keyboard.ENTER;
+    }
+
+    init() {}
+
+    preload() {
+        game.load.spritesheet('button', '../assets/buttons/button_sprite_sheet.png', 193, 71);
+        game.load.image('background', '../assets/pics/bubble-on.png');
+        game.load.image('close', '../assets/sprites/orb-red.png');
+    }
+
+    resetGame() {
+
+    }
+
+    create() {
+        const button = game.add.button(100, 100, 'button', this.resetGame, this, 2, 2, 1);
+        button.input.useHandCursor = true;
+
+        game.add.text(0, 0, 'Game Over. Press enter to restart', {
+            font: '40px Bangers',
+            fill: '#ffffff',
+            smoothed: false
+        });
+
+        this.popup();
+    }
+
+    popup() {
+        const popup = game.add.sprite(game.world.centerX, game.world.centerY, 'background');
+        popup.alpha = 0.8;
+        popup.anchor.set(0.5);
+        popup.inputEnabled = true;
+        popup.input.enableDrag();
+    }
+
+    update() {
+        if(this.enterButton.isDown) {
+            alert('enter');
+        }
+    }
+
+}
