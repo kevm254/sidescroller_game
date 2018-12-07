@@ -46,4 +46,8 @@ export default class extends State {
         }
     }
 
+    resetGame() {
+        game.state.start('Boot');
+    }
+
 }

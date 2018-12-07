@@ -1,0 +1,114 @@
+import Phaser from 'phaser';
+import { State } from 'phaser';
+
+export default class Title extends State {
+    init() {
+        this.cursors = game.input.keyboard.createCursorKeys();
+        this.menuPos = 0;
+    }
+
+    preload() {
+        game.load.image('background', '../assets/games/starstruck/background2.png');
+    }
+
+    create() {
+        game.stage.backgroundColor = '#222222';
+        game.add.text(this.game.world.centerX - 200, 15, 'Warrior\'s Quest', {
+            font: '40px Arial',
+            fill: '#ffff22',
+            align: 'center'
+        });
+
+        this.drawMenu();
+
+    }
+
+    btnIsDown(btn) {
+        switch(btn) {
+            case 'LEFT':
+                return this.cursors.left.onUp;
+            case 'RIGHT':
+                return this.cursors.right.onUp;
+            case 'UP':
+                return this.cursors.up.onUp;
+            case 'DOWN':
+                return this.cursors.down.onUp;
+        }
+    }
+
+    update() {
+        this.handleControls();
+
+    }
+
+    handleControls() {
+        if (this.btnIsDown('LEFT')) {
+            if (this.menuPos > 0) {
+                this.menuPos -= 1;
+            } else {
+                this.menuPos = 1;
+            }
+            this.updateMenuUI();
+
+        }
+        if (this.btnIsDown('RIGHT')) {
+        }
+        if (this.btnIsDown('UP')) {
+            game.state.start('Boot');
+        }
+        if (this.btnIsDown('DOWN')) {
+        }
+    }
+
+    updateMenuUI() {
+        if(this.menuPos === 0) {
+            game.add.text(this.menuData.xPos + 15, this.menuData.yPos + 15, "Game Start", {
+                fill: '#ee9620'
+            });
+
+            game.add.text(this.menuData.xPos + 15, this.menuData.yPos + 50, "Options", {
+                fill: '#FFFFFF'
+            });
+        }
+        if(this.menuPos === 1) {
+            game.add.text(this.menuData.xPos + 15, this.menuData.yPos + 15, "Game Start", {
+                fill: '#FFFFFF'
+            });
+
+            game.add.text(this.menuData.xPos + 15, this.menuData.yPos + 50, "Options", {
+                fill:'#ee9620'
+            });
+        }
+    }
+
+    getCenterX() {
+        return this.game.world.centerX;
+    }
+    getCenterY() {}
+
+    drawMenu() {
+
+        this.menuData = {
+            xPos: 0,
+            yPos: 200,
+            menuWidth: 200,
+            menuHeight: 100,
+        };
+
+        this.menuData.xPos = this.getCenterX() - (this.menuData.menuWidth / 2);
+
+        this.ui = game.add.graphics(this.menuData.xPos, this.menuData.yPos);
+        this.ui.beginFill(0x123457);
+        this.ui.lineStyle(5, 0xffd900, 1);
+        this.ui.drawRect(0, 0, this.menuData.menuWidth, this.menuData.menuHeight);
+
+        this.cursorPos = 0;
+
+        this.uiOptions = game.add.text(this.menuData.xPos + 15, this.menuData.yPos + 15, "Game Start", {
+            fill: '#FFFFFF'
+        });
+        this.uiOptions2 = game.add.text(this.menuData.xPos + 15, this.menuData.yPos + 50, "Options", {
+            fill: '#FFFFFF'
+        });
+    }
+}
